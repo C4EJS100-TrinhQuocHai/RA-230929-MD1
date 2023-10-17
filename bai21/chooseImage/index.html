@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 400px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .container img {
+            width: 90px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- hiển thị ảnh -->
+    <div class="container">
+        <!--         <img src="./images/question-mark.jpg" alt="">
+        <img src="./images/question-mark.jpg" alt="">
+        <img src="./images/question-mark.jpg" alt="">
+        <img src="./images/question-mark.jpg" alt="">
+        <img src="./images/question-mark.jpg" alt="">
+        <img src="./images/question-mark.jpg" alt="">
+        <img src="./images/question-mark.jpg" alt="">
+        <img src="./images/question-mark.jpg" alt="">
+        <img src="./images/question-mark.jpg" alt="">
+        <img src="./images/question-mark.jpg" alt="">
+        <img src="./images/question-mark.jpg" alt="">
+        <img src="./images/question-mark.jpg" alt=""> -->
+    </div>
+    <button style="color: red;" onclick="changeImage()"> reset game </button>
+    <script>
+        let images = [{
+            main: "./images/baby-bear.jpg",
+            cross: "./images/question-mark.jpg",
+            id:1
+        },
+        {
+            main: "./images/cat.jpg",
+            cross: "./images/question-mark.jpg",
+            id: 2
+        },
+        {
+            main: "./images/bird.jpg",
+            cross: "./images/question-mark.jpg",
+            id: 3
+        },
+        {
+            main: "./images/dog.jpg",
+            cross: "./images/question-mark.jpg",
+            id: 4
+        },
+        {
+            main: "./images/hamster.jpg",
+            cross: "./images/question-mark.jpg",
+            id: 5
+        },
+        {
+            main: "./images/curious-cat.jpg",
+            cross: "./images/question-mark.jpg",
+            id: 6
+        },
+       {
+                main: "./images/baby-bear.jpg",
+                cross: "./images/question-mark.jpg",
+                id: 7
+            },
+            {
+                main: "./images/cat.jpg",
+                cross: "./images/question-mark.jpg",
+                id: 8
+            },
+            {
+                main: "./images/bird.jpg",
+                cross: "./images/question-mark.jpg",
+                id: 9
+            },
+            {
+                main: "./images/dog.jpg",
+                cross: "./images/question-mark.jpg",
+                id: 10
+            },
+            {
+                main: "./images/hamster.jpg",
+                cross: "./images/question-mark.jpg",
+                id: 11
+            },
+            {
+                main: "./images/curious-cat.jpg",
+                cross: "./images/question-mark.jpg",
+                id: 12
+            },
+        ];
+
+        let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        let newImages=[...images];
+        function changeImage() {
+            newImages = [];
+            while (newImages.length < 12) {
+                let number = Math.floor(Math.random() * 12);
+                let count = 0;
+                for (let i = 0; i < newImages.length; i++) {
+                    if (newImages[i].main == images[number].main) {
+                        count++;
+                    }
+                }
+                if (count < 2) {
+                    newImages.push(images[number]);
+                    count = 0;
+                }
+                count = 0;
+            }
+            console.log(newImages);
+            showImage(newImages)
+        }
+        // funciton hien thi  anh 
+        function showImage(images) {
+            let text = "";
+            for (let i = 0; i < images.length; i++) {
+                text +=
+                    `
+                              <img onclick=choose('${images[i].id}') src="${images[i].cross}" alt="">
+                        `
+
+            }
+            document.getElementsByClassName("container")[0].innerHTML = text
+        }
+        showImage(images)
+        // function chọn ảnh
+        function choose(id) {
+               console.log(id);
+               for (let i = 0; i < newImages.length; i++) {
+                    if(newImages[i].id==id){
+                        console.log("8888");
+                        newImages[i].cross=newImages[i].main;
+                        showImage(newImages)
+                    }
+               }
+        }
+    </script>
+</body>
+
+</html>

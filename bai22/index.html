@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" oninput="changeText()" id="text" maxlength="19">
+    <script>
+        function changeText() {
+            let inputValue=document.getElementById("text").value;
+            if(inputValue.length ==4 || inputValue.length == 9 ||inputValue.length ==14){
+              document.getElementById("text").value=inputValue+" "
+            }
+        }
+    </script>
+</body>
+</html>

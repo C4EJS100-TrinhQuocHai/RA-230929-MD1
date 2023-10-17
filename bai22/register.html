@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="form">
+        <label for="">email</label> <br>
+        <input type="text" id="email"> <br>
+        <label for="">mật khẩu</label> <br>
+        <input type="text" id="password"> <br>
+        <label for="">xác nhận mật khẩu</label> <br>
+        <input type="text" id="confirmPassword"> <br>
+        <button onclick="register()"> đăng kí </button>
+    </div>
+    <script>
+        /* Chức năng đăng kí tài khoản!
+        -Tạo 1 cái mảng để lưu danh sách user
+        -Nếu trùng email thì bắt đăng kí lại.
+
+         */
+        function uuid() {
+            return Math.floor(Math.random() * 9475854) + new Date().getMilliseconds();
+        }
+        let users=JSON.parse(localStorage.getItem("user"))||[];
+        // function đăng kí
+        function register(params) {
+            let email=document.getElementById("email").value;
+            let password= document.getElementById("password").value;
+            let confirmPassword = document.getElementById("confirmPassword").value;
+            let obj={
+                email:email,
+                password:password,
+                id:uuid()
+            }
+            if(password==confirmPassword){
+                let flag=true;
+                for (let i = 0; i < users.length; i++) {
+                    if(users[i].email==email){
+                        flag=false;
+                        break;
+                    }
+                }
+                if(!flag){
+                    console.log("đã trùng email");
+                }else{
+                    users.push(obj);
+                }
+            }
+            localStorage.setItem("user",JSON.stringify(users));
+
+        }
+    </script>
+</body>
+</html>

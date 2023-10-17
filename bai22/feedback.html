@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        .list-marks {
+            display: flex;
+            list-style: none;
+            gap: 10px;
+            width: 900px;
+            justify-content: center;
+            margin: 10px auto;
+        }
+
+        .list-marks li {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid black;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        .input {
+            display: flex;
+            list-style: none;
+            gap: 10px;
+            width: 900px;
+            justify-content: center;
+            margin: 20px auto;
+        }
+
+        .input input {
+            flex: 1;
+            padding: 5px;
+        }
+
+        .contents {}
+
+        .contents li {
+            position: relative;
+            list-style: none;
+        }
+
+        .contents li span {
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: absolute;
+            left: -20px;
+            bottom: 15px;
+            border: 1px solid rgb(241, 33, 67);
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .choose-item {
+            background-color: pink;
+        }
+    </style>
+</head>
+
+<body>
+    <h1> Feedback coach </h1>
+    <div class="container">
+        <ul class="list-marks">
+        </ul>
+    </div>
+    <div class="input">
+        <input id="input" type="text">
+        <button class="btn" onclick="addContents()">send</button>
+    </div>
+    <!--  hứng giá trị -->
+    <ul class="contents">
+        <li>
+            nội dung
+            <span>1</span>
+            <button>delete</button>
+            <button>edit</button>
+        </li>
+    </ul>
+    <script>
+        let count = 0;
+        // để lấy điểm
+        let flag = false;
+        // để biết khi nào add khi nào edit
+        // function tạo id
+        function uuid() {
+            return Math.floor(Math.random() * 89798484545);
+        }
+        // function hiển thị list điểm
+        function showMarks(params) {
+            let text = "";
+            for (let i = 0; i < 10; i++) {
+                text += ` <li class="item" onclick=chooseMarks(${i + 1})>${i + 1}</li>`
+            }
+            document.getElementsByClassName("list-marks")[0].innerHTML = text;
+        }
+        showMarks()
+        // function chọn điểm 
+        function chooseMarks(id) {
+            // console.log(id);
+            let items = document.getElementsByClassName("item");
+            count = id;
+            for (let i = 0; i < items.length; i++) {
+                if (i == id - 1) {
+                    items[i].classList.add("choose-item");
+                } else {
+                    items[i].classList.remove("choose-item");
+                }
+            }
+            // console.log(count);
+        }
+        // function add contents
+        let contents = JSON.parse(localStorage.getItem("contents")) || [];
+        function addContents() {
+            let inputValue = document.getElementById("input").value;
+            if (count == 0) {
+                alert("bạn phải chọn điểm đánh giá");
+                return;
+            }
+            if (inputValue.length < 5) {
+                alert("nội dung nhiều hơn 5 kí tự");
+                return;
+            }
+            let info = {
+                content: inputValue,
+                point: count,
+                id: uuid(),
+            }
+            if (flag) {
+                // đây là người dùng muốn edit chứ không phải add
+                for (let i = 0; i < contents.length; i++) {
+                    if (contents[i].id == flag) {
+                        contents.splice(i, 1, { ...info, id: flag });
+                        localStorage.setItem("contents", JSON.stringify(contents));
+                        flag = false;
+                        document.getElementById("input").value = "";
+                        document.getElementsByClassName("item")[count - 1].classList.remove("choose-item");
+                        document.getElementsByClassName("btn")[0].innerHTML = "add";
+                        count = 0;
+                        
+                        showContents();
+                        return;
+                    }
+                }
+            }
+            // đưa field nhập về rỗng 
+            document.getElementById("input").value = "";
+            // cho màu của ô về default
+            document.getElementsByClassName("item")[count - 1].classList.remove("choose-item");
+            contents.push(info);
+            localStorage.setItem("contents", JSON.stringify(contents));
+            document.getElementsByClassName("btn")[0].innerHTML = "add";
+            showContents();
+        }
+        // function hiển thị list contents
+        function showContents() {
+            let data = JSON.parse(localStorage.getItem("contents")) || [];
+            let text = "";
+            for (let i = 0; i < data.length; i++) {
+                text +=
+                    `
+                         <li>
+                                ${data[i].content}
+                            <span>${data[i].point}</span>
+                            <button onclick=deleteItem(${data[i].id})>delete</button>
+                            <button onclick=editItem(${data[i].id})>edit</button>
+                        </li>
+                    `
+            }
+            document.getElementsByClassName("contents")[0].innerHTML = text;
+        }
+        showContents()
+        // function xoá feedback
+        function deleteItem(id) {
+            let data = JSON.parse(localStorage.getItem("contents")) || [];
+            let confirmDelete = confirm("bạn có muốn xoá hay không?");
+            if (confirmDelete) {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].id == id) {
+                        data.splice(i, 1);
+                        localStorage.setItem("contents", JSON.stringify(data));
+                        showContents();
+                    }
+                }
+            }
+        }
+        function editItem(id) {
+            document.getElementsByClassName("btn")[0].innerHTML = "edit";
+            let check;
+            flag = id;
+            let data = JSON.parse(localStorage.getItem("contents")) || [];
+            for (let index = 0; index < data.length; index++) {
+                if (data[index].id == id) {
+                    document.getElementById("input").value = data[index].content;
+                    check = data[index].point;
+                    break;
+                }
+            }
+            let items = document.getElementsByClassName("item");
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].innerHTML == check) {
+                    items[i].classList.add("choose-item");
+                } else {
+                    items[i].classList.remove("choose-item");
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

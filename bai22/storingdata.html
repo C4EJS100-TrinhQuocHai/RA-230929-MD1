@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        Storing data in the browser 
+        (Lưu trữ dữ liệu trên trìnH duyệt);
+        Cung cấp 3 cái:
+        1.local  storage
+        -Dung lượng tầm 5MB-10MB
+        -Dữ liệU sẽ không bị mất đi (trừ khi xoá)
+        1MB=1024kb
+
+        *********************
+        Cú pháp lưu trữ
+        CRUD
+        C:create: thêm
+        localstorage.setItme(key,value);
+        -CHÚ Ý: khi lưu dữ liệu dạng mảng hoặc object thì khi lưu phải chuyển sang
+        định dạng JSON để lưu.
+        U:update.
+        D: delete
+        localStorage.removeItem("userId")// xoá 1 key
+        localStorage.clear(): // xoá hết
+        lấy về là get 
+        2.session storage
+        -Dung lượng tầm 3-5MB
+        -Phiên làm việc (khi đóng trình duyệt hoặc mở tab khác) thì dữ liệu không còn
+        3.cookeis
+        -Dung lượng tầm 10Kb
+        -dùng để duy trì đăng nhập
+        -MỖI LẦN REQUEST lên server có thể gửi kèm theo cookeis
+        -Có thể set thời gian cho nó 
+     -->
+     <script>
+        // localStorage.setItem("name","nguyễn phương trang!"); 
+        // localStorage.setItem("name", "nguyễn ngọc ánh!"); 
+        // localStorage.setItem("name1", "nguyễn minh anh"); 
+
+        // localStorage.removeItem("name");
+        //  localStorage.clear();
+            let numbers=[3,4,5];
+        localStorage.setItem("name", "nguyễn ngọc ánh!"); 
+        // localStorage.setItem("nums",JSON.stringify(numbers));
+            let result= localStorage.getItem("nums");
+            console.log(JSON.parse(result));
+
+     </script>
+</body>
+</html>
